@@ -11,54 +11,58 @@ import RequestService from 'services/request.service'
 import styles from './assignmentDetailPage.scss'
 
 const AssignmentDetailPage = () => {
-    const [loading, setLoading] = useState(true)
-    const [error, setError] = useState(null)
-    
-    // REPLACE array with single Assignment
-    const [assignment, setAssignment] = useState(new Array<Assignment>())
-    
-    useEffect(() => {
-        fetchData()
-    },[])
+  const [loading, setLoading] = useState(true)
+  const [error, setError] = useState(null)
 
-    const fetchData = async () => {
-        try {
-            // Replace 1 with current assignment
-            const assignment = await RequestService.get<Assignment>(`/api/assignments/1`)
+  const [assignment, setAssignment] = useState<Assignment | null>(null)
 
-            // REPLACE array with single Assignment
-            const assignmentArray = [assignment]
-            setAssignment(assignmentArray)
-        } catch (error) {
-            setError(error)
-        } finally {
-            setLoading(false)
-        }
+  useEffect(() => {
+    fetchData()
+  }, [])
+
+  const fetchData = async () => {
+    try {
+      const currentAssignment = await RequestService.get<Assignment>(`/api/assignments/2`)
+      setAssignment(currentAssignment)
+    } catch (error) {
+      setError(error)
+    } finally {
+      setLoading(false)
     }
+  }
 
-    if (loading) return <LoadingOverlay delay={250} />
-    if (error) return <ErrorPage error={error} />
+  if (loading) return <LoadingOverlay delay={250} />
+  if (error) return <ErrorPage error={error} />
 
-    return (
-        <PageWrapper>
-                <div className={styles.header}>
-                    <h1>Assignment Details</h1>
-                </div>
-            <div className={styles.assignmentBox}>
-                <div className={styles.name}>{assignment[0].name}</div>
-                <div className={styles.subText}>
-                    <p>{assignment[0].description}</p>
-                    <p>Due: <b>{prettyPrintDate(assignment[0].dueDate)}</b></p>
-                    <p>Last day to handin: <b>{prettyPrintDate(assignment[0].endDate)}</b></p>
-                    
-                    {/* Add functionality to button */}
-                    <button className={styles.button}>SUBMIT</button>
-                </div>
+  return (
+    <PageWrapper>
+      <div className={styles.header}>
+        <h1>Assignment Details</h1>
+      </div>
+      <div className={styles.assignmentBox}>
+        {assignment ? (
+          <>
+            <div className={styles.name}>{assignment.name}</div>
+            <div className={styles.subText}>
+              <p>{assignment.description}</p>
+              <p>
+                Due: <b>{prettyPrintDate(assignment.dueDate)}</b>
+              </p>
+              <p>
+                Last day to handin: <b>{prettyPrintDate(assignment.endDate)}</b>
+              </p>
+
+              <button className={styles.button}>SUBMIT</button>
             </div>
+          </>
+        ) : (
+          <div>Could not find assignment</div>
+        )}
+      </div>
 
-        {/* Add submission history here */}
-        </PageWrapper>
-    )
+      {/* Add submission history here */}
+    </PageWrapper>
+  )
 }
 
 export default AssignmentDetailPage
