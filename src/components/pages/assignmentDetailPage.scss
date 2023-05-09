@@ -1,0 +1,55 @@
+@import 'variables';
+
+.header {
+    color: $text-color;
+    display: flex;
+    justify-content: space-between;
+}
+
+.name {
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin-bottom: 0.4rem;
+}
+
+.subText {
+    font-size: 1.1rem;
+    width: 100%;
+  }
+
+.assignmentBox {
+    text-decoration: none;
+
+    background: $list-item-background;
+    border-radius: 0.6rem;
+
+    padding: 1.5rem;
+
+    color: $text-color;
+
+}
+
+.button {
+    display: inline-block;
+    padding: 10px 20px;
+    font-size: 16px;
+    font-weight: bold;
+    text-align: center;
+    border: none;
+    border-radius: 4px;
+    color: $background;
+    background-color: $green;
+    transition: background-color 0.3s ease;
+    cursor: pointer;
+}
+
+.button:hover {
+    background-color: $green-lighter;
+    color: $text-color;
+  }
+
+@media (max-width: 700px) {
+  .header {
+    display: block;
+  }
+}
